@@ -1,8 +1,14 @@
-Message Database Instructions
+Message Database
+
+$ cd Messages Database
 
 1.  Open up your terminal.
 2.  Type in 'sqlite3 messages_database.db' into the terminal to make a new db.
 3.  Type 'sqlite3 messages_database.db < create.sql' into terminal to create tables.
 4.  Type 'sqlite3 messages_database.db < insert.sql' into terminal to insert data onto tables.
 5.  Type 'sqlite3 messages_database.db' in terminal to get into sqlite3 environment.
-6.  Copy + paste queries within ruby methods in sql_queries.rb for verification in completing the assignment.
+6.  Copy + paste queries in sql_queries.sql to verify completion of assignment.
+
+On Golden Pond
+
+$ cd On Golden Pond
