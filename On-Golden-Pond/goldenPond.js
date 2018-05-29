@@ -1,69 +1,67 @@
-class Duck {
-  constructor(row, col, dir) {
-    this.rows = rows;
-    this.cols = cols;
-    this.dir = dir;
-  }
+const duck = (bounds, pos, instructions) => {
+  let state = {
+    bounds: bounds.split(" "),
+    pos: pos.split(" "),
+    instructions
+  };
 
-  output() {
-    console.log(this.row + " " + this.column + " " + this.direction);
-  }
-}
+  return Object.assign({}, start(state));
+};
 
-class Pond {
-  constructor(rows, cols) {
-    this.rows = rows;
-    this.cols = cols;
-    this.initPond();
-  }
+const start = state => ({
+  moveDuck: () => {
+    const maxX = state.bounds[0];
+    const maxY = state.bounds[1];
+    const s = ["N", "E", "S", "W"];
+    const p = ["N", "W", "S", "E"];
+    let x = +state.pos[0];
+    let y = +state.pos[1];
+    let orientation = state.pos[2];
 
-  initPond() {
-    this.board = new Array(this.rows);
-    for (var r = 0; r < this.rows; r++) {
-      this.board[r] = new Array(this.cols);
-      for (var c = 0; c < this.rows; c++) {
-        this.board[r][c] = ".";
+    for (let i = 0; i < state.instructions.length; i++) {
+      let instruction = state.instructions[i];
+      let oldOrientation = orientation;
+      switch (instruction) {
+        case "P":
+          orientation =
+            p.indexOf(oldOrientation) === p.length - 1
+              ? p[0]
+              : p[p.indexOf(oldOrientation) + 1];
+          break;
+        case "S":
+          orientation =
+            s.indexOf(oldOrientation) === s.length - 1
+              ? s[0]
+              : s[s.indexOf(oldOrientation) + 1];
+          debugger;
+          break;
+        case "F":
+          switch (orientation) {
+            case "N":
+              if (y === maxY) continue;
+              else y = y + 1;
+              break;
+            case "S":
+              if (y === 0) continue;
+              else y = y - 1;
+              break;
+            case "E":
+              if (x === maxX) continue;
+              else x = x + 1;
+              break;
+            case "W":
+              if (x === 0) continue;
+              else x = x - 1;
+              break;
+          }
       }
     }
+    return console.log([x, y, orientation].join(" "));
   }
-  orientation(duck, command) {
-    var dirToNum = { N: 1, W: 2, S: 3, E: 4 };
-    // key value pair using dictionary for number to direction
-    var numToDir = { 1: "N", 2: "W", 3: "S", 4: "E" };
+});
 
-    // get number of the currect direction and save in variable
-    var val = dirToNum[duck.dir];
+const duck1 = duck("5 5", "1 2 N", "PFPFPFPFF");
+const duck2 = duck("5 5", "3 3 E", "FFSFFSFSSF");
 
-    if (command === "S") {
-      // if moving starboard side i.e. right then subtract
-      val -= 1;
-      if (val < 1) {
-        val = 4;
-      }
-    } else if (command === "P") {
-      // if moving port side i.e. left then add
-      val += 1;
-      if (val > 4) {
-        val = 1;
-      }
-    } else {
-      console.log("Invalid change direction command: " + command);
-      process.exit(1);
-    }
-    // convert computed number to direction again
-    duck.dir = numToDir[val];
-    debugger;
-  }
-
-  move() {
-    //where is it going?
-  }
-
-  process() {}
-
-  start() {
-    //instantiate new move
-  }
-}
-
-let pond = new Pond(10, 10);
+duck1.moveDuck();
+duck2.moveDuck();
